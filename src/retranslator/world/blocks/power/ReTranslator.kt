@@ -129,7 +129,7 @@ open class ReTranslator(name: String) : PowerDistributor(name) {
             super.draw()
 
             Draw.z(Layer.power)
-            Draw.color(laserColor1, laserColor2, lastAmount / laserPower)
+            Draw.color(laserColor1, laserColor2, (1f - lastAmount / laserPower) * 0.86f + Mathf.absin(3f, 0.1f))
             Draw.alpha(Renderer.laserOpacity)
 
             target?.let {
