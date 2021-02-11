@@ -8,6 +8,7 @@ import arc.graphics.g2d.Lines
 import arc.graphics.g2d.TextureRegion
 import arc.math.Mathf
 import arc.math.geom.Geometry
+import arc.math.geom.Position
 import mindustry.Vars.tilesize
 import mindustry.Vars.world
 import mindustry.core.Renderer
@@ -94,7 +95,7 @@ open class ReTranslator(name: String) : PowerDistributor(name) {
 
     inner class ReTranslatorBuild : Building() {
 
-        var target: Building? = null
+        var target: Position? = null
 
         override fun updateTile() {
             var x = tileX()
@@ -103,12 +104,13 @@ open class ReTranslator(name: String) : PowerDistributor(name) {
             for (i in 0..range) {
                 x += Geometry.d4[rotation].x
                 y += Geometry.d4[rotation].y
-                world.tile(x, y)?.build?.let {
-                    if (it.block.hasPower) {
+                world.tile(x, y)?.let {
+                    val build = it.build ?: return
+                    if (build.block.hasPower) {
                         target = it
                         val amount = Mathf.clamp(laserPower, 0f, this.power.graph.batteryStored)
-                        Mathf.clamp(amount, 0f, it.power.graph.totalBatteryCapacity - it.power.graph.batteryStored)
-                        it.power.graph.transferPower(amount)
+                        Mathf.clamp(amount, 0f, build.power.graph.totalBatteryCapacity - build.power.graph.batteryStored)
+                        build.power.graph.transferPower(amount)
                         power.graph.transferPower(-amount)
                         return
                     }
@@ -126,7 +128,8 @@ open class ReTranslator(name: String) : PowerDistributor(name) {
 
             target?.let {
                 val g = Geometry.d4[rotation]
-                Drawf.laser(team, laser, laserEnd, x + 0.5f * g.x, y + 0.5f * g.y, it.x - 0.5f * g.x, it.y - 0.5f * g.y, 0.5f)
+                val t = tilesize / 2
+                Drawf.laser(team, laser, laserEnd, x + g.x * t, y + g.y * t, it.x - g.x * t, it.y - g.y * t, 0.5f)
             }
         }
 
