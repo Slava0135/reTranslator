@@ -126,13 +126,13 @@ open class ReTranslator(name: String) : PowerDistributor(name) {
             super.draw()
 
             Draw.z(Layer.power)
-            Draw.color(laserColor1, laserColor2, (1f - power.graph.satisfaction) * 0.86f + Mathf.absin(3f, 0.1f))
+            Draw.color(laserColor1, laserColor2, lastAmount / laserPower)
             Draw.alpha(Renderer.laserOpacity)
 
             target?.let {
                 val g = Geometry.d4[rotation]
                 val t = tilesize / 2
-                Drawf.laser(team, laser, laserEnd, x + g.x * t, y + g.y * t, it.x - g.x * t, it.y - g.y * t, lastAmount / laserPower)
+                Drawf.laser(team, laser, laserEnd, x + g.x * t, y + g.y * t, it.x - g.x * t, it.y - g.y * t, 0.5f)
             }
         }
 
