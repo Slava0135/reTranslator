@@ -96,11 +96,13 @@ open class ReTranslator(name: String) : PowerDistributor(name) {
     inner class ReTranslatorBuild : Building() {
 
         var target: Position? = null
+        var lastAmount = 0f
 
         override fun updateTile() {
             var x = tileX()
             var y = tileY()
             target = null
+            lastAmount = 0f
             for (i in 0..range) {
                 x += Geometry.d4[rotation].x
                 y += Geometry.d4[rotation].y
@@ -110,6 +112,7 @@ open class ReTranslator(name: String) : PowerDistributor(name) {
                         target = it
                         val amount = Mathf.clamp(laserPower, 0f, this.power.graph.batteryStored)
                         Mathf.clamp(amount, 0f, build.power.graph.totalBatteryCapacity - build.power.graph.batteryStored)
+                        lastAmount = amount
                         build.power.graph.transferPower(amount)
                         power.graph.transferPower(-amount)
                         return
@@ -129,7 +132,7 @@ open class ReTranslator(name: String) : PowerDistributor(name) {
             target?.let {
                 val g = Geometry.d4[rotation]
                 val t = tilesize / 2
-                Drawf.laser(team, laser, laserEnd, x + g.x * t, y + g.y * t, it.x - g.x * t, it.y - g.y * t, 0.5f)
+                Drawf.laser(team, laser, laserEnd, x + g.x * t, y + g.y * t, it.x - g.x * t, it.y - g.y * t, lastAmount / laserPower)
             }
         }
 
