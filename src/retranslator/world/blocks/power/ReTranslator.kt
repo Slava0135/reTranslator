@@ -2,6 +2,7 @@ package retranslator.world.blocks.power
 
 import arc.Core
 import arc.Core.atlas
+import arc.graphics.Color
 import arc.graphics.g2d.Draw
 import arc.graphics.g2d.Lines
 import arc.graphics.g2d.TextureRegion
@@ -9,9 +10,11 @@ import arc.math.Mathf
 import arc.math.geom.Geometry
 import mindustry.Vars.tilesize
 import mindustry.Vars.world
+import mindustry.core.Renderer
 import mindustry.core.UI
 import mindustry.gen.Building
 import mindustry.graphics.Drawf
+import mindustry.graphics.Layer
 import mindustry.graphics.Pal
 import mindustry.ui.Bar
 import mindustry.world.blocks.power.PowerBlock
@@ -25,6 +28,9 @@ open class ReTranslator(name: String) : PowerBlock(name) {
 
     var laser: TextureRegion? = null
     var laserEnd: TextureRegion? = null
+
+    var laserColor1 = Color.white
+    var laserColor2 = Pal.powerLight
     
     init {
         consumesPower = false
@@ -108,9 +114,14 @@ open class ReTranslator(name: String) : PowerBlock(name) {
 
         override fun draw() {
             super.draw()
+
+            Draw.z(Layer.power)
+            Draw.color(laserColor1, laserColor2, (1f - power.graph.satisfaction) * 0.86f + Mathf.absin(3f, 0.1f))
+            Draw.alpha(Renderer.laserOpacity)
+
             target?.let {
                 val g = Geometry.d4[rotation]
-                Drawf.laser(team, laser, laserEnd, x + 0.5f * g.x, y + 0.5f * g.y, it.x - 0.5f * g.x, it.y - 0.5f * g.y, 0.25f)
+                Drawf.laser(team, laser, laserEnd, x + 0.5f * g.x, y + 0.5f * g.y, it.x - 0.5f * g.x, it.y - 0.5f * g.y, 0.5f)
             }
         }
 
