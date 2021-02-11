@@ -7,9 +7,7 @@ import retranslator.world.blocks.power.ReTranslator
 class ReBlocks : ContentList {
     override fun load() {
         retranslator = object : ReTranslator("retranslator") {
-            init {
 
-            }
         }
     }
 

@@ -59,10 +59,7 @@ open class ReTranslator(name: String) : PowerBlock(name) {
     }
 
     override fun drawPlace(x: Int, y: Int, rotation: Int, valid: Boolean) {
-        val tile = world.tile(x, y) ?: return
-
         Lines.stroke(2f, Pal.placing)
-
         Lines.dashLine(
             x * tilesize + Geometry.d4[rotation].x * (tilesize / 2f + 2),
             y * tilesize + Geometry.d4[rotation].y * (tilesize / 2f + 2),
