@@ -11,6 +11,6 @@ class ReTranslator : Mod() {
         ReBlocks().load()
 
         Blocks.powerNode.requirements = Blocks.powerNode.requirements.plus(ItemStack(Items.surgeAlloy, 1))
-        Blocks.powerNode.requirements = Blocks.powerNode.requirements.plus(ItemStack(Items.surgeAlloy, 3))
+        Blocks.powerNodeLarge.requirements = Blocks.powerNodeLarge.requirements.plus(ItemStack(Items.surgeAlloy, 3))
     }
 }
