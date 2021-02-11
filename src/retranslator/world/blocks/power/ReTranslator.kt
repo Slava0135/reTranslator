@@ -106,8 +106,9 @@ open class ReTranslator(name: String) : PowerDistributor(name) {
                     if (it.block.hasPower) {
                         target = it
                         val amount = Mathf.clamp(laserPower, 0f, this.power.graph.batteryStored)
-                        Mathf.clamp(amount, 0f, it.power.graph.batteryCapacity - it.power.graph.batteryStored)
+                        Mathf.clamp(amount, 0f, it.power.graph.totalBatteryCapacity - it.power.graph.batteryStored)
                         it.power.graph.transferPower(amount)
+                        power.graph.transferPower(-amount)
                         return
                     }
                 }
