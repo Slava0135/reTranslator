@@ -105,8 +105,8 @@ open class ReTranslator(name: String) : PowerDistributor(name) {
                 x += Geometry.d4[rotation].x
                 y += Geometry.d4[rotation].y
                 world.tile(x, y)?.let {
-                    val build = it.build ?: return
-                    if (build.block.hasPower) {
+                    val build = it.build
+                    if (build != null && build.block.hasPower) {
                         target = it
                         val amount = Mathf.clamp(laserPower, 0f, this.power.graph.batteryStored)
                         Mathf.clamp(amount, 0f, build.power.graph.totalBatteryCapacity - build.power.graph.batteryStored)
