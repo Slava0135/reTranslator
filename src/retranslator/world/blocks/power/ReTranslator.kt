@@ -102,6 +102,7 @@ open class ReTranslator(name: String) : PowerBlock(name) {
                         return
                     }
                 }
+                if (world.solid(x, y)) return
             }
         }
 
