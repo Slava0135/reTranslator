@@ -109,7 +109,8 @@ open class ReTranslator(name: String) : PowerBlock(name) {
         override fun draw() {
             super.draw()
             target?.let {
-                Drawf.laser(team, laser, laserEnd, x, y, it.x, it.y)
+                val g = Geometry.d4[rotation]
+                Drawf.laser(team, laser, laserEnd, x + 0.5f * g.x, y + 0.5f * g.y, it.x - 0.5f * g.x, it.y - 0.5f * g.y, 0.25f)
             }
         }
 
