@@ -38,6 +38,7 @@ open class ReTranslator(name: String) : PowerDistributor(name) {
         canOverdrive = false
         drawDisabled = false
         update = true
+        rotate = true
     }
 
     override fun load() {
