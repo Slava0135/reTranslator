@@ -96,10 +96,10 @@ open class ReTranslator(name: String) : PowerDistributor(name) {
     inner class ReTranslatorBuild : Building() {
 
         var target: Position? = null
-        var lastAmount = 0f
+        var efficiency = 0f
 
         override fun updateTile() {
-            lastAmount = transfer()
+            efficiency = transfer()
         }
 
         private fun transfer(): Float {
@@ -113,11 +113,11 @@ open class ReTranslator(name: String) : PowerDistributor(name) {
                     val build = it.build
                     if (build != null && build.block.hasPower) {
                         target = it
-                        val amount = Mathf.clamp(laserPower, 0f, this.power.graph.batteryStored)
-                        Mathf.clamp(amount, 0f, build.power.graph.totalBatteryCapacity - build.power.graph.batteryStored)
+                        var amount = Mathf.clamp(laserPower, 0f, this.power.graph.batteryStored)
+                        amount = Mathf.clamp(amount, 0f, build.power.graph.totalBatteryCapacity - build.power.graph.batteryStored)
                         build.power.graph.transferPower(amount)
                         power.graph.transferPower(-amount)
-                        return amount
+                        return amount / laserPower
                     }
                 }
                 if (world.solid(x, y)) return 0f
@@ -129,7 +129,7 @@ open class ReTranslator(name: String) : PowerDistributor(name) {
             super.draw()
 
             Draw.z(Layer.power)
-            Draw.color(laserColor1, laserColor2, (1f - lastAmount / laserPower) * 0.86f + Mathf.absin(3f, 0.1f))
+            Draw.color(laserColor1, laserColor2, (1f - efficiency) * 0.86f + Mathf.absin(3f, 0.1f))
             Draw.alpha(Renderer.laserOpacity)
 
             target?.let {
