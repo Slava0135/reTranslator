@@ -12,6 +12,7 @@ class ReBlocks : ContentList {
         retranslator = object : ReTranslator("retranslator") {
             init {
                 requirements(Category.power, ItemStack.with(Items.copper, 1, Items.lead, 3))
+                consumes.powerBuffered(500f)
                 alwaysUnlocked = true
             }
         }

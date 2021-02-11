@@ -17,14 +17,14 @@ import mindustry.graphics.Drawf
 import mindustry.graphics.Layer
 import mindustry.graphics.Pal
 import mindustry.ui.Bar
-import mindustry.world.blocks.power.PowerBlock
+import mindustry.world.blocks.power.PowerDistributor
 import mindustry.world.meta.Stat
 import mindustry.world.meta.StatUnit
 
-open class ReTranslator(name: String) : PowerBlock(name) {
+open class ReTranslator(name: String) : PowerDistributor(name) {
 
     var range = 8
-    var power = 50f
+    var laserPower = 50f
 
     var laser: TextureRegion? = null
     var laserEnd: TextureRegion? = null
@@ -105,6 +105,9 @@ open class ReTranslator(name: String) : PowerBlock(name) {
                 world.tile(x, y)?.build?.let {
                     if (it.block.hasPower) {
                         target = it
+                        val amount = Mathf.clamp(laserPower, 0f, this.power.graph.batteryStored)
+                        Mathf.clamp(amount, 0f, it.power.graph.batteryCapacity - it.power.graph.batteryStored)
+                        it.power.graph.transferPower(amount)
                         return
                     }
                 }
