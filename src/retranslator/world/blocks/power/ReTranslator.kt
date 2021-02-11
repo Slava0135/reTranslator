@@ -7,9 +7,8 @@ import arc.graphics.g2d.Lines
 import arc.graphics.g2d.TextureRegion
 import arc.math.Mathf
 import arc.math.geom.Geometry
-import arc.math.geom.Vec2
 import mindustry.Vars.tilesize
-import mindustry.content.Fx
+import mindustry.Vars.world
 import mindustry.core.UI
 import mindustry.gen.Building
 import mindustry.graphics.Drawf
@@ -21,7 +20,7 @@ import mindustry.world.meta.StatUnit
 
 open class ReTranslator(name: String) : PowerBlock(name) {
 
-    var range = 8f
+    var range = 8
     var power = 50f
 
     var laser: TextureRegion? = null
@@ -32,6 +31,7 @@ open class ReTranslator(name: String) : PowerBlock(name) {
         outputsPower = false
         canOverdrive = false
         drawDisabled = false
+        update = true
     }
 
     override fun load() {
@@ -76,18 +76,34 @@ open class ReTranslator(name: String) : PowerBlock(name) {
             y * tilesize + Geometry.d4[rotation].y * (tilesize / 2f + 2),
             x * tilesize + Geometry.d4[rotation].x * (range + 0.5f) * tilesize,
             y * tilesize + Geometry.d4[rotation].y * (range + 0.5f) * tilesize,
-            range.toInt()
+            range
         )
     }
 
     override fun setStats() {
         super.setStats()
-        stats.add(Stat.powerRange, range, StatUnit.blocks)
+        stats.add(Stat.powerRange, range.toFloat(), StatUnit.blocks)
     }
 
     inner class ReTranslatorBuild : Building() {
 
-        var target: ReTranslatorBuild? = null
+        var target: Building? = null
+
+        override fun updateTile() {
+            var x = tileX()
+            var y = tileY()
+            target = null
+            for (i in 0..range) {
+                x += Geometry.d4[rotation].x
+                y += Geometry.d4[rotation].y
+                world.tile(x, y)?.build?.let {
+                    if (it.block.hasPower) {
+                        target = it
+                        return
+                    }
+                }
+            }
+        }
 
         override fun draw() {
             super.draw()
