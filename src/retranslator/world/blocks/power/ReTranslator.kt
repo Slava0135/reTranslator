@@ -8,6 +8,7 @@ import arc.graphics.g2d.Lines
 import arc.graphics.g2d.TextureRegion
 import arc.math.Mathf
 import arc.math.geom.Geometry
+import arc.math.geom.Point2
 import arc.math.geom.Position
 import mindustry.Vars.tilesize
 import mindustry.Vars.world
@@ -95,7 +96,7 @@ open class ReTranslator(name: String) : PowerDistributor(name) {
 
     inner class ReTranslatorBuild : Building() {
 
-        var target: Position? = null
+        var target: Point2? = null
         var efficiency = 0f
 
         override fun updateTile() {
@@ -112,7 +113,7 @@ open class ReTranslator(name: String) : PowerDistributor(name) {
                 world.tile(x, y)?.let {
                     val build = it.build
                     if (build != null && build.block.hasPower) {
-                        target = it
+                        target = Point2(x, y)
                         var amount = Mathf.clamp(laserPower, 0f, this.power.graph.batteryStored)
                         amount = Mathf.clamp(amount, 0f, build.power.graph.totalBatteryCapacity - build.power.graph.batteryStored)
                         build.power.graph.transferPower(amount)
@@ -134,7 +135,7 @@ open class ReTranslator(name: String) : PowerDistributor(name) {
 
             target?.let {
                 val g = Geometry.d4[rotation]
-                val t = tilesize / 2
+                val t = tilesize / 2f
                 Drawf.laser(team, laser, laserEnd, x + g.x * t, y + g.y * t, it.x - g.x * t, it.y - g.y * t, 0.5f)
             }
         }
