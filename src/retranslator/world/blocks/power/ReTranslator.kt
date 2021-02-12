@@ -83,8 +83,8 @@ open class ReTranslator(name: String) : PowerDistributor(name) {
         Lines.dashLine(
             x * tilesize + Geometry.d4[rotation].x * (tilesize / 2f + 2),
             y * tilesize + Geometry.d4[rotation].y * (tilesize / 2f + 2),
-            x * tilesize + Geometry.d4[rotation].x * (range + 0.5f) * tilesize,
-            y * tilesize + Geometry.d4[rotation].y * (range + 0.5f) * tilesize,
+            x * tilesize + Geometry.d4[rotation].x * (range + 1.5f) * tilesize,
+            y * tilesize + Geometry.d4[rotation].y * (range + 1.5f) * tilesize,
             range
         )
     }
