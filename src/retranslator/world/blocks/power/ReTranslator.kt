@@ -136,7 +136,7 @@ open class ReTranslator(name: String) : PowerDistributor(name) {
             target?.let {
                 val g = Geometry.d4[rotation]
                 val t = tilesize / 2f
-                Drawf.laser(team, laser, laserEnd, x + g.x * t, y + g.y * t, it.x - g.x * t, it.y - g.y * t, 0.5f)
+                Drawf.laser(team, laser, laserEnd, x + g.x * t, y + g.y * t, it.x * tilesize - g.x * t, it.y * tilesize - g.y * t, 0.5f)
             }
         }
 
